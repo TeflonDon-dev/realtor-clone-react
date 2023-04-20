@@ -1,13 +1,27 @@
-import React from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
 import {useLocation, useNavigate} from "react-router-dom"
 
 
 export default function Header() {
+    const [pageState,setPageState]=useState("Sign in")
     const location = useLocation();
     const navigate = useNavigate(); 
+    const auth = getAuth();
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+              setPageState("Profile")
+            }
+            else {
+                setPageState("Sign in")
+            }
+      })  
+    },[auth])
      
     
-    function pathMathRoute(route) {
+    function pathMatchRoute(route) {
         if (route === location.pathname) {
             return true
         }
@@ -21,9 +35,9 @@ export default function Header() {
               </div>
               <div>
                   <ul className='flex space-x-10'>
-                      <li onClick={()=>navigate("/")} className={` cursor-pointer py-3 text-sm font-semibold text-gray-400  ${pathMathRoute("/") && "border-b-[3px] border-b-red-500 text-gray-950"}`}>Home</li>
-                      <li onClick={()=>navigate("/offers")} className={` cursor-pointer py-3 text-sm font-semibold text-gray-400 ${pathMathRoute("/offers") && "text-gray-950 border-b-[3px] border-b-red-500"} cursor-pointer `}>Offers</li>
-                      <li onClick={()=>navigate("/sign-in")} className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 ${pathMathRoute("/sign-in") && "text-gray-950 border-b-[3px]  border-b-red-500"}`}>Sign in</li>
+                      <li onClick={()=>navigate("/")} className={` cursor-pointer py-3 text-sm font-semibold text-gray-400  ${pathMatchRoute("/") && "border-b-[3px] border-b-red-500 text-gray-950"}`}>Home</li>
+                      <li onClick={()=>navigate("/offers")} className={` cursor-pointer py-3 text-sm font-semibold text-gray-400 ${pathMatchRoute("/offers") && "text-gray-950 border-b-[3px] border-b-red-500"} cursor-pointer `}>Offers</li>
+                      <li onClick={() => navigate("/profile")} className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 ${(pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) && "text-gray-950 border-b-[3px]  border-b-red-500"}`}>{ pageState}</li>
                   </ul>
               </div>
           </header>
