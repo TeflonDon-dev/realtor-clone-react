@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {getAuth, updateProfile} from "firebase/auth"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link} from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
-
+import { FcHome } from "react-icons/fc";
 export default function Profile() {
   const auth = getAuth()
   const navigate = useNavigate();
@@ -70,6 +70,12 @@ const [changeDetail,setChangeDetail]=useState(false)
               <p onClick={onLogOut} className='text-blue-600 hover:text-blue-800 transition duration-200 ease-out cursor-pointer '>Sign out</p>
             </div>
           </form>
+          <button className=' w-full bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800 ' type="submit">
+            <Link className=' flex justify-center items-center' to="/create-listing">
+            <FcHome className=' mr-2 text-3xl bg-red-200 rounded-full p-1 border-2 '/> Sell or rent your home 
+            </Link>
+          
+          </button>
         </div>
     </section>
     </>
