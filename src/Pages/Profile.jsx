@@ -17,9 +17,11 @@ export default function Profile() {
 
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
-    email: auth.currentUser.email
+    email: auth.currentUser.email,
+    image:auth.currentUser.photoURL,
   });
-  const { name, email } = formData;
+  const { name, email, image } = formData;
+  console.log(`The image is ${image}`);
 
   function onLogOut() {
     auth.signOut()
@@ -76,6 +78,9 @@ export default function Profile() {
       <section className=' flex-col max-w-6xl mx-auto flex justify-center items-center'>
         <h1 className=' text-3xl text-center mt-6 font-bold'>My Profile</h1>
         <div className=' w-full md:w-[50%] mt-6 px-3'>
+          <div className=' flex justify-center items-center mb-6'>
+            <img className=' rounded-full' src={image} alt="" />
+            </div>
           <form>
             {/* Name Input */}
             <input
